@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Card from "../components/HizbCard";
 import CongratsCard from "../components/CongratsCard";
 import Footer from "../components/Footer";
-import { translations } from "../translation";
+import { translations } from "../uses/translation";
+import { ahadith } from "../uses/ahadith";
 import { useLang } from "../components/LanguageContext";
 
 const initialAhzab = [
@@ -165,6 +166,9 @@ export default function Main() {
 
   const t = translations[lang];
 
+  const random = useRef(Math.floor(Math.random() * 9));
+  const hadith = ahadith[random.current].content; // used useRef so the value stays conserved on each render
+
   return (
     <div
       dir={isAr ? "rtl" : "ltr"}
@@ -184,8 +188,11 @@ export default function Main() {
           {t.pageTitle}
         </h1>
         <div className="w-12 h-1 bg-teal-600 rounded-full" />
-        <p className="font-arabic text-base text-gray-600 text-center leading-loose max-w-md">
-          {t.description}
+        <p
+          dir="rtl"
+          className="font-arabic text-base text-gray-600 text-center leading-loose max-w-md"
+        >
+          {hadith}
         </p>
         <div className="bg-white border border-teal-200 rounded-2xl px-10 py-4 text-center shadow-sm">
           <p className="font-arabic text-4xl font-bold text-teal-700 leading-none">

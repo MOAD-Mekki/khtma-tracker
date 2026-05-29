@@ -32,7 +32,7 @@ export default function Welcome() {
   return (
     <div
       dir={isAr ? "rtl" : "ltr"}
-      className="font-arabic flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100 min-h-screen w-full relative"
+      className="font-arabic flex items-center justify-center bg-linear-to-br from-emerald-50 to-teal-100 min-h-screen w-full relative"
     >
       {/* Language toggle */}
       <button
