@@ -1,17 +1,25 @@
-import Welcome from "./pages/Welcome"
+import Welcome from "./pages/Welcome";
 import Main from "./pages/Main";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-function App() {
-
+import { LanguageProvider } from "./components/LanguageContext";
+function AppContent() {
   return (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Welcome />}/>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Welcome />} />
 
-      <Route path="/pages" element={<Main />}/>
-    </Routes>
-  </BrowserRouter>
-  )
+        <Route path="/pages" element={<Main />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
+  );
+}
+
+export default App;

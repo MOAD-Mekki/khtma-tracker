@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import Card from "../components/HizbCard";
+import CongratsCard from "../components/CongratsCard";
 import Footer from "../components/Footer";
+import { translations } from "../translation";
+import { useLang } from "../components/LanguageContext";
 
 const initialAhzab = [
   { id: 1, title: "الفاتحة", completed: false },
@@ -61,7 +64,7 @@ const initialAhzab = [
   { id: 57, title: "تبارك", completed: false },
   { id: 58, title: "قل أوحي", completed: false },
   { id: 59, title: "عم", completed: false },
-  { id: 60, title: "سبح", completed: false }
+  { id: 60, title: "سبح", completed: false },
 ];
 
 const initialAjzaa = [
@@ -94,14 +97,18 @@ const initialAjzaa = [
   { id: 27, title: "الجزء السابع والعشرون", completed: false },
   { id: 28, title: "الجزء الثامن والعشرون", completed: false },
   { id: 29, title: "الجزء التاسع والعشرون", completed: false },
-  { id: 30, title: "الجزء الثلاثون", completed: false }
+  { id: 30, title: "الجزء الثلاثون", completed: false },
 ];
 
 export default function Main() {
   const [ahzab, setAhzab] = useState(initialAhzab);
   const [ajzaa, setAjzaa] = useState(initialAjzaa);
   const [khatmaCount, setKhatmaCount] = useState(0);
+  const [showResetModal, setShowResetModal] = useState(false);
   const [viewMode, setViewMode] = useState("hizb");
+  const [showCongrats, setShowCongrats] = useState(false);
+  const { lang, toggle } = useLang();
+  const isAr = lang === "ar";
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("khatmaData"));
@@ -115,52 +122,106 @@ export default function Main() {
   useEffect(() => {
     localStorage.setItem(
       "khatmaData",
-      JSON.stringify({ ahzab, ajzaa, khatmaCount })
+      JSON.stringify({ ahzab, ajzaa, khatmaCount }),
     );
   }, [ahzab, ajzaa, khatmaCount]);
 
   function toggleItem(id, type) {
     if (type === "hizb") {
       const updated = ahzab.map((h) =>
-        h.id === id ? { ...h, completed: !h.completed } : h
+        h.id === id ? { ...h, completed: !h.completed } : h,
       );
       setAhzab(updated);
-
       if (updated.every((h) => h.completed)) {
-        setAhzab(initialAhzab);
         setKhatmaCount((c) => c + 1);
+        setShowCongrats(true);
       }
     } else {
       const updated = ajzaa.map((j) =>
-        j.id === id ? { ...j, completed: !j.completed } : j
+        j.id === id ? { ...j, completed: !j.completed } : j,
       );
       setAjzaa(updated);
-
       if (updated.every((j) => j.completed)) {
-        setAjzaa(initialAjzaa);
         setKhatmaCount((c) => c + 1);
+        setShowCongrats(true);
       }
     }
   }
 
+  function handleReset() {
+    setKhatmaCount(0);
+    setAhzab(initialAhzab);
+    setAjzaa(initialAjzaa);
+    setShowResetModal(false);
+  }
+
+  function handleNewKhatma() {
+    setAhzab(initialAhzab);
+    setAjzaa(initialAjzaa);
+    setShowCongrats(false);
+  }
+
   const list = viewMode === "hizb" ? ahzab : ajzaa;
 
+  const t = translations[lang];
+
   return (
-    <div className="flex flex-col gap-5 justify-center items-center bg-linear-to-br from-green-400 to-green-700 max-w-full h-full">
+    <div
+      dir={isAr ? "rtl" : "ltr"}
+      className="font-arabic overflow-x-hidden flex flex-col gap-5 justify-center items-center bg-linear-to-br from-emerald-50 to-teal-100 max-w-full h-full"
+    >
+      <button
+        onClick={toggle}
+        className="fixed top-4 left-4 z-40 bg-white border border-teal-300 text-teal-700 font-sans font-semibold text-sm px-4 py-2 rounded-full shadow-sm hover:bg-teal-50 hover:scale-105 transition-all cursor-pointer"
+      >
+        {isAr ? "EN" : "ع"}
+      </button>
       <header className="flex flex-col gap-5 justify-center items-center mt-10">
-        <h1 className="text-4xl">مخطط ختمة القرآن الكريم</h1>
-        <p className="w-150 h-full text-xl">
-          هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى...
+        <h1 className="font-arabic text-4xl font-bold text-teal-700 text-center leading-snug">
+          <span className="block text-sm font-sans tracking-widest text-teal-400 mb-1">
+            {t.pageSubtitle}
+          </span>
+          {t.pageTitle}
+        </h1>
+        <div className="w-12 h-1 bg-teal-600 rounded-full" />
+        <p className="font-arabic text-base text-gray-600 text-center leading-loose max-w-md">
+          {t.description}
         </p>
-        <p className="mt-5 text-lg" >{khatmaCount} عدد الختمات</p>
+        <div className="bg-white border border-teal-200 rounded-2xl px-10 py-4 text-center shadow-sm">
+          <p className="font-arabic text-4xl font-bold text-teal-700 leading-none">
+            {khatmaCount}
+          </p>
+          <p className="font-sans text-xs text-gray-400 mt-1 tracking-wide">
+            {t.khatmaCount}
+          </p>
+        </div>
       </header>
 
-      <section className="flex flex-row justify-between gap-10 mt-10">
-        <button className='hover:cursor-pointer text-lg border rounded-2xl px-2.5 py-1' onClick={() => setViewMode("hizb")}>عرض الختمة بالأحزاب</button>
-        <button className="hover:cursor-pointer text-lg border rounded-2xl px-2.5 py-1" onClick={() => setViewMode("juz")}>عرض الختمة بالأجزاء</button>
+      <section className="flex flex-row gap-3 mt-6">
+        <button
+          className={`font-arabic font-medium rounded-full text-base px-6 py-2.5 transition-all hover:scale-105 hover:cursor-pointer
+      ${
+        viewMode === "hizb"
+          ? "bg-teal-700 text-white shadow-md"
+          : "bg-white text-teal-700 border border-teal-500 hover:bg-teal-50"
+      }`}
+          onClick={() => setViewMode("hizb")}
+        >
+          {t.viewByHizb}
+        </button>
+        <button
+          className={`font-arabic font-medium rounded-full text-base px-6 py-2.5 transition-all hover:scale-105 hover:cursor-pointer
+      ${
+        viewMode === "juz"
+          ? "bg-teal-700 text-white shadow-md"
+          : "bg-white text-teal-700 border border-teal-500 hover:bg-teal-50"
+      }`}
+          onClick={() => setViewMode("juz")}
+        >
+          {t.viewByJuz}
+        </button>
       </section>
-
-      <section className="grid grid-cols-8 justify-around gap-5 my-10">
+      <section className="grid grid-cols-3 lg:grid-cols-8 md:grid-cols-5 grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) justify-around gap-6 my-10">
         {list.map((item) => (
           <Card
             key={item.id}
@@ -169,9 +230,50 @@ export default function Main() {
           />
         ))}
       </section>
-      <div><button onClick={() => setKhatmaCount(0)}>تصفير </button></div>
-      <footer>
-      </footer>
+      <div className="my-10">
+        <button
+          className="text-white bg-linear-to-r from-red-400 via-red-500 to-red-600 hover:scale-105 hover:cursor-pointer shadow-lg font-medium rounded-full text-base px-5 py-2.5 transition-transform"
+          onClick={() => setShowResetModal(true)}
+        >
+          {t.reset}
+        </button>
+      </div>
+      <footer></footer>
+      {showResetModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 flex flex-col items-center gap-4 shadow-xl text-center">
+            <div className="text-4xl">⚠️</div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              {t.resetConfirmTitle}
+            </h2>
+            <p className="text-gray-500 text-base leading-relaxed">
+              {t.resetConfirmBody}
+            </p>
+            <div className="flex gap-3 w-full mt-2">
+              <button
+                className="flex-1 bg-red-500 text-white font-medium py-2.5 rounded-xl hover:bg-red-600 transition-colors"
+                onClick={handleReset}
+              >
+                {t.resetYes}
+              </button>
+              <button
+                className="flex-1 bg-gray-100 text-gray-700 font-medium py-2.5 rounded-xl hover:bg-gray-200 transition-colors"
+                onClick={() => setShowResetModal(false)}
+              >
+                {t.resetCancel}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showCongrats && (
+        <CongratsCard
+          khatmaCount={khatmaCount}
+          onNewKhatma={handleNewKhatma}
+          t={t}
+        />
+      )}
     </div>
   );
 }
