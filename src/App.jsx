@@ -5,7 +5,7 @@ import { LanguageProvider } from "./components/LanguageContext";
 
 function AppContent() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/khtma-tracker">
       <Routes>
         <Route path="/" element={<Welcome />} />
 

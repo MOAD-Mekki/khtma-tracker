@@ -166,7 +166,7 @@ export default function Main() {
 
   const t = translations[lang];
 
-  const random = useRef(Math.floor(Math.random() * 9));
+  const random = useRef(Math.floor(Math.random() * 10));
   const hadith = ahadith[random.current].content; // used useRef so the value stays conserved on each render
 
   return (
