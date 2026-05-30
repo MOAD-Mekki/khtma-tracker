@@ -1,5 +1,6 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Navbar from "../components/Nav";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLang } from "../components/LanguageContext";
@@ -32,33 +33,31 @@ export default function Welcome() {
   return (
     <div
       dir={isAr ? "rtl" : "ltr"}
-      className="font-arabic flex items-center justify-center bg-linear-to-br from-emerald-50 to-teal-100 min-h-screen w-full relative"
+      className="font-arabic flex flex-col bg-gradient-to-br from-emerald-50 to-teal-100 min-h-screen w-full"
     >
-      {/* Language toggle */}
-      <button
-        onClick={toggle}
-        className="fixed top-4 left-4 z-40 bg-white border border-teal-300 text-teal-700 font-sans font-semibold text-sm px-4 py-2 rounded-full shadow-sm hover:bg-teal-50 hover:scale-105 transition-all cursor-pointer"
-      >
-        {isAr ? "EN" : "ع"}
-      </button>
+      {/* Navbar sticks to top */}
+      <Navbar />
 
-      <div
-        className="flex flex-col justify-center items-center border border-teal-200 rounded-2xl w-full max-w-md mx-4 p-8 bg-white/80 backdrop-blur-sm shadow-lg text-center gap-5"
-        data-aos="zoom-in"
-        data-aos-duration="1000"
-      >
-        <h1 className="font-arabic text-4xl font-bold text-teal-700">
-          {t.title}
-        </h1>
-        <p className="font-arabic text-lg text-gray-600 leading-relaxed">
-          {t.description}
-        </p>
-        <button
-          onClick={() => navigate("/pages")}
-          className="mt-2 bg-teal-500 hover:bg-teal-600 text-white font-arabic font-medium py-2.5 px-8 rounded-full text-lg transition-all hover:scale-105 cursor-pointer"
+      {/* This grows to fill remaining height and centers the card */}
+      <div className="flex-1 flex items-center justify-center px-4 py-10">
+        <div
+          className="flex flex-col justify-center items-center border border-teal-200 rounded-2xl w-full max-w-md p-8 bg-white/80 backdrop-blur-sm shadow-lg text-center gap-5"
+          data-aos="zoom-in"
+          data-aos-duration="1500"
         >
-          {t.button}
-        </button>
+          <h1 className="font-arabic text-4xl font-bold text-teal-700">
+            {t.title}
+          </h1>
+          <p className="font-arabic text-lg text-gray-600 leading-relaxed">
+            {t.description}
+          </p>
+          <button
+            onClick={() => navigate("/pages")}
+            className="mt-2 bg-teal-500 hover:bg-teal-600 text-white font-arabic font-medium py-2.5 px-8 rounded-full text-lg transition-all hover:scale-105 cursor-pointer"
+          >
+            {t.button}
+          </button>
+        </div>
       </div>
     </div>
   );

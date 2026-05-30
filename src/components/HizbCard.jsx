@@ -14,6 +14,8 @@ export default function Card({ id, title, completed, onClick }) {
         }
       `}
     >
+
+      {/*  The right sign rendering */}
       {completed && (
         <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center mb-1">
           <svg
@@ -28,9 +30,13 @@ export default function Card({ id, title, completed, onClick }) {
           </svg>
         </div>
       )}
+
+      {/* // Hizb or Juz number */}
       <span className="text-xs font-sans text-gray-400 font-medium leading-none">
         {id}
       </span>
+
+      {/* // Hizb or Juz name  */}
       <p className="font-arabic text-base font-bold leading-snug">{title}</p>
     </div>
   );

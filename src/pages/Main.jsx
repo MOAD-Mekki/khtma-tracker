@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import Navbar from "../components/Nav";
 import Card from "../components/HizbCard";
 import CongratsCard from "../components/CongratsCard";
+import Contact from "../components/ContactCard";
 import Footer from "../components/Footer";
 import { translations } from "../uses/translation";
 import { ahadith } from "../uses/ahadith";
@@ -111,6 +113,8 @@ export default function Main() {
   const { lang, toggle } = useLang();
   const isAr = lang === "ar";
 
+
+  // Local storage handler
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("khatmaData"));
     if (saved) {
@@ -127,6 +131,8 @@ export default function Main() {
     );
   }, [ahzab, ajzaa, khatmaCount]);
 
+
+  // toggle between hizb and juz rendering
   function toggleItem(id, type) {
     if (type === "hizb") {
       const updated = ahzab.map((h) =>
@@ -149,6 +155,7 @@ export default function Main() {
     }
   }
 
+  // Reset khatma counter 
   function handleReset() {
     setKhatmaCount(0);
     setAhzab(initialAhzab);
@@ -156,6 +163,7 @@ export default function Main() {
     setShowResetModal(false);
   }
 
+  // New khatma handler after the congrats card
   function handleNewKhatma() {
     setAhzab(initialAhzab);
     setAjzaa(initialAjzaa);
@@ -164,22 +172,22 @@ export default function Main() {
 
   const list = viewMode === "hizb" ? ahzab : ajzaa;
 
+  // translation object
   const t = translations[lang];
 
+  // handling ahadith rendering
   const random = useRef(Math.floor(Math.random() * 10));
   const hadith = ahadith[random.current].content; // used useRef so the value stays conserved on each render
 
   return (
     <div
       dir={isAr ? "rtl" : "ltr"}
-      className="font-arabic overflow-x-hidden flex flex-col gap-5 justify-center items-center bg-linear-to-br from-emerald-50 to-teal-100 max-w-full h-full"
+      className="font-arabic flex flex-col gap-5 justify-center items-center bg-linear-to-br from-emerald-50 to-teal-100 max-w-full h-full"
     >
-      <button
-        onClick={toggle}
-        className="fixed top-4 left-4 z-40 bg-white border border-teal-300 text-teal-700 font-sans font-semibold text-sm px-4 py-2 rounded-full shadow-sm hover:bg-teal-50 hover:scale-105 transition-all cursor-pointer"
-      >
-        {isAr ? "EN" : "ع"}
-      </button>
+      {/* // Language changer */}
+      <Navbar />
+
+      {/* // The page Header */}
       <header className="flex flex-col gap-5 justify-center items-center mt-10">
         <h1 className="font-arabic text-4xl font-bold text-teal-700 text-center leading-snug">
           <span className="block text-sm font-sans tracking-widest text-teal-400 mb-1">
@@ -187,7 +195,7 @@ export default function Main() {
           </span>
           {t.pageTitle}
         </h1>
-        <div className="w-12 h-1 bg-teal-600 rounded-full" />
+        <div className="w-20 h-1 bg-teal-600 rounded-full" />
         <p
           dir="rtl"
           className="font-arabic text-base text-gray-600 text-center leading-loose max-w-md"
@@ -204,6 +212,7 @@ export default function Main() {
         </div>
       </header>
 
+      {/* // View type container */}
       <section className="flex flex-row gap-3 mt-6">
         <button
           className={`font-arabic font-medium rounded-full text-base px-6 py-2.5 transition-all hover:scale-105 hover:cursor-pointer
@@ -228,6 +237,8 @@ export default function Main() {
           {t.viewByJuz}
         </button>
       </section>
+
+      {/* // Cards container */}
       <section className="grid grid-cols-3 lg:grid-cols-8 md:grid-cols-5 grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) justify-around gap-6 my-10">
         {list.map((item) => (
           <Card
@@ -238,6 +249,8 @@ export default function Main() {
         ))}
       </section>
       <div className="my-10">
+
+        {/* // Reset */}
         <button
           className="text-white bg-linear-to-r from-red-400 via-red-500 to-red-600 hover:scale-105 hover:cursor-pointer shadow-lg font-medium rounded-full text-base px-5 py-2.5 transition-transform"
           onClick={() => setShowResetModal(true)}
@@ -245,7 +258,11 @@ export default function Main() {
           {t.reset}
         </button>
       </div>
-      <footer></footer>
+
+        {/* // Footer adding */}
+      <Footer />
+
+      {/* // Reset verefication card */}
       {showResetModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 flex flex-col items-center gap-4 shadow-xl text-center">
@@ -273,7 +290,8 @@ export default function Main() {
           </div>
         </div>
       )}
-
+      
+      {/* // Congrats Card */}
       {showCongrats && (
         <CongratsCard
           khatmaCount={khatmaCount}
