@@ -195,7 +195,6 @@ export default function Main() {
           </span>
           {t.pageTitle}
         </h1>
-        <div className="w-20 h-1 bg-teal-600 rounded-full" />
         <p
           dir="rtl"
           className="font-arabic text-base text-gray-600 text-center leading-loose max-w-md"
