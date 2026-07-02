@@ -1,7 +1,7 @@
 import Welcome from "./pages/Welcome";
 import Main from "./pages/Main";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LanguageProvider } from "./components/LanguageContext";
+import { LanguageProvider } from "./components/LanguageContext.tsx";
 
 function AppContent() {
   return (

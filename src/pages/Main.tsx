@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import Navbar from "../components/Nav";
+import Navbar from "../components/Nav.jsx";
 import Card from "../components/HizbCard";
 import CongratsCard from "../components/CongratsCard";
 import Contact from "../components/ContactCard";
 import Footer from "../components/Footer";
 import { translations } from "../uses/translation";
-import { ahadith } from "../uses/ahadith";
+import { ahadith } from "../uses/ahadith"
 import { useLang } from "../components/LanguageContext";
 
 const initialAhzab = [
@@ -103,20 +103,33 @@ const initialAjzaa = [
   { id: 30, title: "الجزء الثلاثون", completed: false },
 ];
 
+
+  interface Hizb {
+    id: number,
+    title: string,
+    completed: boolean
+  };
+
 export default function Main() {
-  const [ahzab, setAhzab] = useState(initialAhzab);
-  const [ajzaa, setAjzaa] = useState(initialAjzaa);
+  const [ahzab, setAhzab] = useState<Hizb[]>(initialAhzab);
+  const [ajzaa, setAjzaa] = useState<Hizb[]>(initialAjzaa);
   const [khatmaCount, setKhatmaCount] = useState(0);
   const [showResetModal, setShowResetModal] = useState(false);
-  const [viewMode, setViewMode] = useState("hizb");
+  const [viewMode, setViewMode] = useState<"hizb" | "juz">("hizb");
   const [showCongrats, setShowCongrats] = useState(false);
   const { lang, toggle } = useLang();
   const isAr = lang === "ar";
 
 
+  interface KhatmaData {
+    khatmaCount: number,
+    ahzab: Hizb[],
+    ajzaa: Hizb[]
+  }
   // Local storage handler
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("khatmaData"));
+    const row = localStorage.getItem("khatmaData");
+    const saved : (KhatmaData | null) = row ? JSON.parse(row) : null;
     if (saved) {
       setAhzab(saved.ahzab || initialAhzab);
       setAjzaa(saved.ajzaa || initialAjzaa);
@@ -131,9 +144,11 @@ export default function Main() {
     );
   }, [ahzab, ajzaa, khatmaCount]);
 
+  
 
+  
   // toggle between hizb and juz rendering
-  function toggleItem(id, type) {
+  function toggleItem(id: number, type: "hizb" | "juz") {
     if (type === "hizb") {
       const updated = ahzab.map((h) =>
         h.id === id ? { ...h, completed: !h.completed } : h,

@@ -33,7 +33,7 @@ export default function Welcome() {
   return (
     <div
       dir={isAr ? "rtl" : "ltr"}
-      className="font-arabic flex flex-col bg-gradient-to-br from-emerald-50 to-teal-100 min-h-screen w-full"
+      className="font-arabic flex flex-col bg-linear-to-br from-emerald-50 to-teal-100 min-h-screen w-full"
     >
       {/* Navbar sticks to top */}
       <Navbar />

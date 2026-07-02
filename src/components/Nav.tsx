@@ -12,7 +12,7 @@ const navTranslations = {
   },
 };
 
-function getHijriDate(lang) {
+function getHijriDate(lang : "ar" | "en") {
   try {
     return new Intl.DateTimeFormat(
       lang === "ar" ? "ar-SA-u-ca-islamic" : "en-SA-u-ca-islamic",
@@ -89,7 +89,7 @@ export default function Navbar() {
         {/* Language toggle */}
         <button
           onClick={toggle}
-          className="bg-white border-2 border-teal-200 text-teal-700 font-sans font-semibold text-sm px-4 py-2 rounded-full hover:bg-teal-50 hover:scale-105 transition-all cursor-pointer flex-shrink-0"
+          className="bg-white border-2 border-teal-200 text-teal-700 font-sans font-semibold text-sm px-4 py-2 rounded-full hover:bg-teal-50 hover:scale-105 transition-all cursor-pointer shrink-0"
         >
           {t.langBtn}
         </button>

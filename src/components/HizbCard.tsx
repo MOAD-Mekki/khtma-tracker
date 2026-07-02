@@ -1,4 +1,11 @@
-export default function Card({ id, title, completed, onClick }) {
+interface CardProps {
+  id: number,
+  title: string,
+  completed: boolean,
+  onClick: () => void
+}
+
+export default function Card({ id, title, completed, onClick } : CardProps) {
   return (
     <div
       onClick={onClick}

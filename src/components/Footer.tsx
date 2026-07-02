@@ -9,7 +9,7 @@ const footerTranslations = {
     bugReport: "الإبلاغ عن خطأ",
     contact: "تواصل معنا",
     madeWith: "صُنع بـ ♥ ابتغاءًا لوجه الله",
-    rights: "© 2025 متتبع الختمة — جميع الحقوق محفوظة",
+    rights: "© 2026 متتبع الختمة | جميع الحقوق محفوظة",
   },
   en: {
     ayahRef: "Al-Muzzammil 73:4",
@@ -17,7 +17,7 @@ const footerTranslations = {
     bugReport: "Report a bug",
     contact: "Contact Us",
     madeWith: "Made with ♥ for the sake of Allah",
-    rights: "© 2025 Khatma Tracker — All rights reserved",
+    rights: "© 2026 Khatma Tracker | All rights reserved",
   },
 };
 

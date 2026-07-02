@@ -27,7 +27,12 @@ const contactTranslations = {
   },
 };
 
-export default function Contact({ onClose, lang }) {
+interface ContactProps {
+  onClose: () => void,
+  lang: "ar" | "en"
+}
+
+export default function Contact({ onClose, lang } : ContactProps) {
   const t = contactTranslations[lang];
   const isAr = lang === "ar";
 
